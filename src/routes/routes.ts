@@ -1,26 +1,37 @@
 import { createBrowserRouter } from "react-router";
 import { RedirectAuthenticated } from "@/guards/RedirectAuthenticated";
 import { ProtectedRoutes } from "@/guards/ProtectedRoutes";
-import LandingPage from "@/lib/pages/LandingPage";
+import LandingPage from "@/pages/LandingPage";
+import LoginPage from "@/pages/auth/LoginPage";
+import RegisterPage from "@/pages/auth/RegisterPage";
+import TestPage from "@/pages/TestPage";
+import VerifyPage from "@/pages/auth/VerifyPage";
+import MainLayout from "@/pages/layout/MainLayout";
+import DashboardPage from "@/pages/app/dashboard/DashboardPage";
 
 export const router = createBrowserRouter([
     {
         Component: RedirectAuthenticated,
         children: [
             { path: "/", Component: LandingPage },
-            //     { path: "/login", Component: LoginPage },
-            //     { path: "/register", Component: RegisterPage },
-            //     { path: "/verify-email", Component: VerifyEmailPage },
+            { path: "/login", Component: LoginPage },
+            { path: "/register", Component: RegisterPage },
+            { path: "/verify", Component: VerifyPage },
+            { path: "/test", Component: TestPage },
         ],
     },
-    // {
-    //     Component: ProtectedRoutes, // Logic for auth check
-    //     children: [
-    //         {
-    //             Component: MainLayout, // Your new Top Nav layout
-    //             children: [
-    //                 { path: "/app", Component: DashboardPage },
-    //                 { path: "/app/setup", Component: ProfilePage },
+    {
+        Component: ProtectedRoutes, // Logic for auth check
+        children: [
+            {
+                Component: MainLayout, // Your new Top Nav layout
+                children: [
+                    { path: "/app", Component: DashboardPage },
+                ]
+            }
+        ]
+    }
+    //                { path: "/app/setup", Component: ProfilePage },
     //                 { path: "/app/setup/personal", Component: PersonalPage },
     //                 { path: "/app/job-history", Component: JobHistoryListPage },
     //                 { path: "/app/job-history/:id", Component: JobHistoryEditPage },

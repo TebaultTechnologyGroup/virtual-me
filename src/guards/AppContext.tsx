@@ -57,7 +57,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!user) return null;
 
     const { data, error } = await supabase
-      .from("profiles")
+      .from("user_profile")
       .select("*")
       .eq("id", user.userId)
       .single();
