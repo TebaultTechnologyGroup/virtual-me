@@ -18,22 +18,21 @@ export default function DashboardPage() {
   }, []);
 
   async function loadDashboard() {
-    if (user) {
-      try {
-        setIsLoading(true);
+    if (!user) throw "Invalid User";
+    try {
+      setIsLoading(true);
+      console.log("userId = " + user.userId);
+      const { data: rpcData, error: rpcError } = await supabase
+        .rpc("get_dashboard_data", { p_user_id: user.userId })
+        .single();
 
-        const { data: rpcData, error: rpcError } = await supabase
-          .rpc("get_dashboard_data", { p_user_id: user.userId })
-          .single();
-
-        if (rpcError) throw rpcError;
-        setData(rpcData as DashboardData);
-      } catch (err) {
-        console.error("Failed to load dashboard:", err);
-        setError("Could not load your dashboard. Please refresh to try again.");
-      } finally {
-        setIsLoading(false);
-      }
+      if (rpcError) throw rpcError;
+      setData(rpcData as DashboardData);
+    } catch (err) {
+      console.error("Failed to load dashboard:", err);
+      setError("Could not load your dashboard. Please refresh to try again.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
